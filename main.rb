@@ -15,7 +15,7 @@ get '/cron/return' do
   tweets.each do |tweet|
     if tweet['text'] =~ /@#{@conf['user']['username']}/
       break if memcache.get('last_id') == tweet['id']
-      messages = YAML.load_file('messages.yaml')['return']
+      messages = YAML.load_file('zenra_messages.yaml')['return']
       message = "@#{@conf['kareshi']} #{messages[rand(messages.length)]}"
       @twitter.update(message)
       memcache.set('last_id', tweet['id'])
@@ -26,7 +26,7 @@ get '/cron/return' do
 end
 
 get '/cron/auto' do
-  messages = YAML.load_file('messages.yaml')['auto']
+  messages = YAML.load_file('zenra_messages.yaml')['auto']
   message = "@#{@conf['kareshi']} #{messages[rand(messages.length)]}"
   @twitter.update(message)
   return
